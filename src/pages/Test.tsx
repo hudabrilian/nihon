@@ -222,6 +222,7 @@ export default function TestPage() {
           </div>
           <div className="flex-1 text-center">
             <h1 className="text-xl font-bold">Nihoon</h1>
+            <span className="text-xs text-base-content/30">By Brilian.</span>
           </div>
           <div className="w-1/3 flex items-center gap-4 text-end">
             <Sidebar />
@@ -418,42 +419,49 @@ export default function TestPage() {
               />
 
               <div className="w-full flex items-center justify-around px-6 pb-6 gap-4">
-                <button
-                  className="btn btn-primary"
-                  onClick={() => {
-                    changeStep(false);
-                  }}
-                  disabled={step === 0}
-                >
-                  Previous
-                </button>
-                <span className="text-xs pb-2 opacity-50 text-center max-w-md">
-                  Press 'Enter' or 'Right Arrow' to go to the next question.
-                  Press 'Left Arrow' to go to the previous question. Scroll to
-                  change the question.
-                </span>
-
-                {step === listKana.length - 1 ? (
-                  <button
-                    className="btn btn-accent"
-                    onClick={() => {
-                      updateUserAnswer();
-                      finish();
-                    }}
-                  >
-                    Finish
-                  </button>
-                ) : (
+                <div className="flex w-1/3 justify-end">
                   <button
                     className="btn btn-primary"
                     onClick={() => {
-                      changeStep(true);
+                      changeStep(false);
                     }}
-                    disabled={step === listKana.length - 1}
+                    disabled={step === 0}
                   >
-                    Next
+                    Previous
                   </button>
-                )}
+                </div>
+
+                <div className="max-w-md text-center mx-4">
+                  <span className="text-xs pb-2 opacity-50 text-center max-w-md">
+                    Press 'Enter' or 'Right Arrow' to go to the next question.
+                    Press 'Left Arrow' to go to the previous question. Scroll to
+                    change the question.
+                  </span>
+                </div>
+
+                <div className="flex w-1/3 justify-start">
+                  {step === listKana.length - 1 ? (
+                    <button
+                      className="btn btn-accent"
+                      onClick={() => {
+                        updateUserAnswer();
+                        finish();
+                      }}
+                    >
+                      Finish
+                    </button>
+                  ) : (
+                    <button
+                      className="btn btn-primary"
+                      onClick={() => {
+                        changeStep(true);
+                      }}
+                      disabled={step === listKana.length - 1}
+                    >
+                      Next
+                    </button>
+                  )}
+                </div>
               </div>
             </div>
           </div>

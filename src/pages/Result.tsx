@@ -4,6 +4,7 @@ import { useResultStore } from "../stores/result";
 import { Sets, useTestStore } from "../stores/test";
 import ReactConfetti from "react-confetti";
 import { useEffect } from "react";
+import Footer from "../components/footer";
 
 export default function ResultPage() {
   const { width, height } = useWindowSize();
@@ -112,6 +113,8 @@ export default function ResultPage() {
           </button>
         </div>
       </div>
+
+      <Footer />
     </div>
   );
 }
