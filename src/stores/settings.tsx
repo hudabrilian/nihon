@@ -53,12 +53,14 @@ interface SettingsState {
   showPreviousQuestion: boolean;
   showNextQuestion: boolean;
   enableSound: boolean;
+  showPreviousAnswers: boolean;
 
   setFont: (font: (typeof Font)[keyof typeof Font]) => void;
   setTheme: (theme: (typeof Theme)[keyof typeof Theme]) => void;
   setShowPreviousQuestion: (showPreviousQuestion: boolean) => void;
   setShowNextQuestion: (showNextQuestion: boolean) => void;
   setEnableSound: (enableSound: boolean) => void;
+  setShowPreviousAnswers: (showPreviousAnswers: boolean) => void;
 }
 
 const useSettingsStore = create<SettingsState>()((set) => ({
@@ -67,12 +69,15 @@ const useSettingsStore = create<SettingsState>()((set) => ({
   showPreviousQuestion: true,
   showNextQuestion: true,
   enableSound: true,
+  showPreviousAnswers: true,
+
   setFont: (font) => set({ font }),
   setTheme: (theme) => set({ theme }),
   setShowPreviousQuestion: (showPreviousQuestion) =>
     set({ showPreviousQuestion }),
   setShowNextQuestion: (showNextQuestion) => set({ showNextQuestion }),
   setEnableSound: (enableSound) => set({ enableSound }),
+  setShowPreviousAnswers: (showPreviousAnswers) => set({ showPreviousAnswers }),
 }));
 
 export { Font, fonts, Theme, themes, useSettingsStore };

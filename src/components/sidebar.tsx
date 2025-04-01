@@ -13,6 +13,9 @@ export default function Sidebar() {
     showNextQuestion,
     showPreviousQuestion,
     enableSound,
+    showPreviousAnswers,
+
+    setShowPreviousAnswers,
     setFont,
     setTheme,
     setShowPreviousQuestion,
@@ -100,6 +103,17 @@ export default function Sidebar() {
                 onChange={(e) => setShowNextQuestion(e.target.checked)}
               />
               Show next question
+            </label>
+
+            <legend className="fieldset-legend">Test options</legend>
+            <label className="fieldset-label">
+              <input
+                type="checkbox"
+                className="toggle"
+                checked={showPreviousAnswers}
+                onChange={(e) => setShowPreviousAnswers(e.target.checked)}
+              />
+              Show previous answers
             </label>
 
             <legend className="fieldset-legend">Sound</legend>

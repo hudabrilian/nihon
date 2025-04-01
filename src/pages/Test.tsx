@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import Sidebar from "../components/sidebar";
 import { getKana } from "../data/data";
 import { Page, usePageStore } from "../stores/page";
-import { Mistake, useResultStore } from "../stores/result";
+import { Mistake, PreviousAnswers, useResultStore } from "../stores/result";
 import { useSettingsStore } from "../stores/settings";
 import { useTestStore } from "../stores/test";
 
@@ -13,9 +13,15 @@ import incorrectSfx from "../assets/sounds/incorrect.mp3";
 export default function TestPage() {
   const { setPage } = usePageStore();
   const { currentSet, selectedGroups, randomize } = useTestStore();
-  const { setQuestions, setAnswers, setMistakes } = useResultStore();
-  const { font, showNextQuestion, showPreviousQuestion, enableSound } =
-    useSettingsStore();
+  const { setQuestions, setAnswers, setMistakes, setPreviousAnswers } =
+    useResultStore();
+  const {
+    font,
+    showNextQuestion,
+    showPreviousQuestion,
+    enableSound,
+    showPreviousAnswers,
+  } = useSettingsStore();
 
   const [step, setStep] = useState(0);
   const [userAnswer, setUserAnswer] = useState<string[]>([]);
@@ -23,6 +29,10 @@ export default function TestPage() {
   const [correct, setCorrect] = useState<Array<boolean | null>>([]);
   const [alertShown, setAlertShown] = useState(false);
   const [progress, setProgress] = useState(0);
+
+  const [previousAnswers, setPreviousAnswersState] = useState<
+    PreviousAnswers[]
+  >([]);
 
   const [answer, setAnswer] = useState<string>("");
   const inputRef = useRef<HTMLInputElement>(null);
@@ -61,6 +71,20 @@ export default function TestPage() {
     setCorrect(new Array(listKana.length).fill(null));
   }, [listKana]);
 
+  const restart = () => {
+    setStep(0);
+    setUserAnswer(listKana.map(() => ""));
+    setCorrect(new Array(listKana.length).fill(null));
+    setMistakesState([]);
+    setPreviousAnswersState([]);
+    setShowAlert(false);
+    setAlertShown(false);
+    setProgress(0);
+    setShowList(true);
+    setAnswer("");
+    setPage(Page.Test);
+  };
+
   const finish = () => {
     updateUserAnswer();
 
@@ -94,6 +118,7 @@ export default function TestPage() {
     );
     setAnswers(updatedUserAnswer);
     setMistakes(mistakesState);
+    setPreviousAnswers(previousAnswers);
     setPage(Page.Result);
   };
 
@@ -122,6 +147,22 @@ export default function TestPage() {
         setCorrect((prev) =>
           prev.map((item, index) => (index === step ? false : item))
         );
+
+        setPreviousAnswersState((prev) => {
+          const updated = [...prev];
+          const found = updated.find(
+            (item) => item.question === currentKana.char
+          );
+          if (found) {
+            found.answers.push(answer);
+          } else {
+            updated.push({
+              question: currentKana.char,
+              answers: [answer],
+            });
+          }
+          return updated;
+        });
 
         if (enableSound) {
           playIncorrect();
@@ -220,12 +261,69 @@ export default function TestPage() {
               Finish
             </button>
           </div>
+
           <div className="flex-1 text-center">
             <h1 className="text-xl font-bold">Nihoon</h1>
             <span className="text-xs text-base-content/30">By Brilian.</span>
           </div>
-          <div className="w-1/3 flex items-center gap-4 text-end">
-            <Sidebar />
+
+          <div className="flex justify-end gap-4 w-1/3">
+            <button
+              className="btn btn-secondary btn-sm"
+              onClick={() => {
+                const modal = document.getElementById(
+                  "restart_modal"
+                ) as HTMLDialogElement;
+                modal?.showModal();
+              }}
+            >
+              Restart
+            </button>
+            <dialog id="restart_modal" className="modal">
+              <div className="modal-box">
+                <h3 className="font-bold text-lg">
+                  Are you sure you want to restart the test?
+                </h3>
+                <p className="py-4">
+                  This will reset your progress and you will lose all your
+                  answers.
+                </p>
+
+                <div className="flex justify-end gap-4">
+                  <button
+                    className="btn btn-primary"
+                    onClick={() => {
+                      restart();
+                      const modal = document.getElementById(
+                        "restart_modal"
+                      ) as HTMLDialogElement;
+                      modal?.close();
+                    }}
+                  >
+                    Yes, restart
+                  </button>
+
+                  <button
+                    className="btn btn-secondary"
+                    onClick={() => {
+                      const modal = document.getElementById(
+                        "restart_modal"
+                      ) as HTMLDialogElement;
+                      modal?.close();
+                    }}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+              <form method="dialog" className="modal-backdrop">
+                <button>close</button>
+              </form>
+            </dialog>
+
+            <div className="flex items-center gap-4 text-end">
+              <Sidebar />
+            </div>
           </div>
         </div>
       </div>
@@ -406,6 +504,25 @@ export default function TestPage() {
             </div>
 
             <div className="flex flex-col items-center justify-center z-20">
+              {showPreviousAnswers && (
+                <div className="mb-2">
+                  {previousAnswers
+                    .filter((item) => item.question === listKana[step].char)
+                    .map((item) =>
+                      item.answers
+                        .slice(-4) // Get the latest 4 answers
+                        .map((answer, index) => (
+                          <span
+                            key={index}
+                            className="badge badge-error badge-outline text-xs mr-1"
+                          >
+                            {answer}
+                          </span>
+                        ))
+                    )}
+                </div>
+              )}
+
               <h3 className="font-bold text-2xl">Type the romaji</h3>
               <input
                 type="text"
