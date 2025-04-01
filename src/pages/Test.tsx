@@ -205,17 +205,29 @@ export default function TestPage() {
   }, [step]);
 
   useEffect(() => {
+    let scrollTimeout: ReturnType<typeof setTimeout> | null = null;
+
     const handleScroll = (e: Event) => {
       if (e instanceof WheelEvent) {
-        if (e.deltaY > 0) {
-          changeStep(true);
-        } else {
-          changeStep(false);
+        if (scrollTimeout) {
+          clearTimeout(scrollTimeout);
         }
+
+        scrollTimeout = setTimeout(() => {
+          if (e.deltaY > 0) {
+            changeStep(true);
+          } else {
+            changeStep(false);
+          }
+        }, 20);
       }
     };
+
     window.addEventListener("wheel", handleScroll);
     return () => {
+      if (scrollTimeout) {
+        clearTimeout(scrollTimeout);
+      }
       window.removeEventListener("wheel", handleScroll);
     };
   }, [changeStep]);
