@@ -29,6 +29,7 @@ export default function TestPage() {
   const [correct, setCorrect] = useState<Array<boolean | null>>([]);
   const [alertShown, setAlertShown] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [hoverList, setHoverList] = useState(false);
 
   const [previousAnswers, setPreviousAnswersState] = useState<
     PreviousAnswers[]
@@ -205,6 +206,8 @@ export default function TestPage() {
   }, [step]);
 
   useEffect(() => {
+    if (hoverList) return;
+
     let scrollTimeout: ReturnType<typeof setTimeout> | null = null;
 
     const handleScroll = (e: Event) => {
@@ -388,7 +391,11 @@ export default function TestPage() {
             </h3>
           </div>
 
-          <div className="hidden sm:block absolute z-10 h-full">
+          <div
+            className="hidden sm:block absolute z-10 h-full"
+            onMouseEnter={() => setHoverList(true)}
+            onMouseLeave={() => setHoverList(false)}
+          >
             {!showList && (
               <button
                 className="btn btn-primary btn-sm m-10"
