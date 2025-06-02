@@ -12,6 +12,8 @@ export default function SelectionPage() {
     setPage(Page.Customize);
   };
 
+  const setPack = () => {};
+
   return (
     <div className="flex flex-col items-center min-h-screen justify-between">
       <div className="flex-1 hero cursor-default">
@@ -44,6 +46,15 @@ export default function SelectionPage() {
               </figure>
               <div className="card-body items-center text-center">
                 <h2 className="card-title text-3xl">Katakana</h2>
+              </div>
+            </CardButton>
+
+            <CardButton className="px-4" onClick={() => setPack()}>
+              <figure className="px-10 py-6">
+                <h2 className="font-bold text-5xl">✨</h2>
+              </figure>
+              <div className="card-body items-center text-center">
+                <h2 className="card-title text-3xl">Packs</h2>
               </div>
             </CardButton>
           </div>
