@@ -10,7 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.49.9",
+    "@auth/core": "0.37.0",
+    "@convex-dev/auth": "^0.0.87",
     "@tailwindcss/vite": "^4.0.8",
     "@tanstack/react-router": "^1.120.13",
     "@tanstack/react-router-devtools": "^1.120.13",
