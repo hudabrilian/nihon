@@ -14,8 +14,8 @@ import { Route as rootRoute } from './routes/__root'
 import { Route as TestImport } from './routes/test'
 import { Route as SelectionImport } from './routes/selection'
 import { Route as ResultImport } from './routes/result'
-import { Route as CustomizeImport } from './routes/customize'
 import { Route as IndexImport } from './routes/index'
+import { Route as CustomizeKanaSetImport } from './routes/customize-kana.$set'
 
 // Create/Update Routes
 
@@ -37,15 +37,15 @@ const ResultRoute = ResultImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const CustomizeRoute = CustomizeImport.update({
-  id: '/customize',
-  path: '/customize',
-  getParentRoute: () => rootRoute,
-} as any)
-
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const CustomizeKanaSetRoute = CustomizeKanaSetImport.update({
+  id: '/customize-kana/$set',
+  path: '/customize-kana/$set',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -58,13 +58,6 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexImport
-      parentRoute: typeof rootRoute
-    }
-    '/customize': {
-      id: '/customize'
-      path: '/customize'
-      fullPath: '/customize'
-      preLoaderRoute: typeof CustomizeImport
       parentRoute: typeof rootRoute
     }
     '/result': {
@@ -88,6 +81,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TestImport
       parentRoute: typeof rootRoute
     }
+    '/customize-kana/$set': {
+      id: '/customize-kana/$set'
+      path: '/customize-kana/$set'
+      fullPath: '/customize-kana/$set'
+      preLoaderRoute: typeof CustomizeKanaSetImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -95,52 +95,58 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/customize': typeof CustomizeRoute
   '/result': typeof ResultRoute
   '/selection': typeof SelectionRoute
   '/test': typeof TestRoute
+  '/customize-kana/$set': typeof CustomizeKanaSetRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/customize': typeof CustomizeRoute
   '/result': typeof ResultRoute
   '/selection': typeof SelectionRoute
   '/test': typeof TestRoute
+  '/customize-kana/$set': typeof CustomizeKanaSetRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
-  '/customize': typeof CustomizeRoute
   '/result': typeof ResultRoute
   '/selection': typeof SelectionRoute
   '/test': typeof TestRoute
+  '/customize-kana/$set': typeof CustomizeKanaSetRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/customize' | '/result' | '/selection' | '/test'
+  fullPaths: '/' | '/result' | '/selection' | '/test' | '/customize-kana/$set'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/customize' | '/result' | '/selection' | '/test'
-  id: '__root__' | '/' | '/customize' | '/result' | '/selection' | '/test'
+  to: '/' | '/result' | '/selection' | '/test' | '/customize-kana/$set'
+  id:
+    | '__root__'
+    | '/'
+    | '/result'
+    | '/selection'
+    | '/test'
+    | '/customize-kana/$set'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  CustomizeRoute: typeof CustomizeRoute
   ResultRoute: typeof ResultRoute
   SelectionRoute: typeof SelectionRoute
   TestRoute: typeof TestRoute
+  CustomizeKanaSetRoute: typeof CustomizeKanaSetRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  CustomizeRoute: CustomizeRoute,
   ResultRoute: ResultRoute,
   SelectionRoute: SelectionRoute,
   TestRoute: TestRoute,
+  CustomizeKanaSetRoute: CustomizeKanaSetRoute,
 }
 
 export const routeTree = rootRoute
@@ -154,17 +160,14 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/customize",
         "/result",
         "/selection",
-        "/test"
+        "/test",
+        "/customize-kana/$set"
       ]
     },
     "/": {
       "filePath": "index.tsx"
-    },
-    "/customize": {
-      "filePath": "customize.tsx"
     },
     "/result": {
       "filePath": "result.tsx"
@@ -174,6 +177,9 @@ export const routeTree = rootRoute
     },
     "/test": {
       "filePath": "test.tsx"
+    },
+    "/customize-kana/$set": {
+      "filePath": "customize-kana.$set.tsx"
     }
   }
 }

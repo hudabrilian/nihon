@@ -3,642 +3,856 @@
     "char": "あ",
     "romaji": "a",
     "group": "a",
-    "category": "main"
+    "category": "main",
+    "answer": ["a"],
+    "mode": "normal"
   },
   {
     "char": "い",
     "romaji": "i",
     "group": "a",
-    "category": "main"
+    "category": "main",
+    "answer": ["i"],
+    "mode": "normal"
   },
   {
     "char": "う",
     "romaji": "u",
     "group": "a",
-    "category": "main"
+    "category": "main",
+    "answer": ["u"],
+    "mode": "normal"
   },
   {
     "char": "え",
     "romaji": "e",
     "group": "a",
-    "category": "main"
+    "category": "main",
+    "answer": ["e"],
+    "mode": "normal"
   },
   {
     "char": "お",
     "romaji": "o",
     "group": "a",
-    "category": "main"
+    "category": "main",
+    "answer": ["o"],
+    "mode": "normal"
   },
   {
     "char": "か",
     "romaji": "ka",
     "group": "k",
-    "category": "main"
+    "category": "main",
+    "answer": ["ka"],
+    "mode": "normal"
   },
   {
     "char": "き",
     "romaji": "ki",
     "group": "k",
-    "category": "main"
+    "category": "main",
+    "answer": ["ki"],
+    "mode": "normal"
   },
   {
     "char": "く",
     "romaji": "ku",
     "group": "k",
-    "category": "main"
+    "category": "main",
+    "answer": ["ku"],
+    "mode": "normal"
   },
   {
     "char": "け",
     "romaji": "ke",
     "group": "k",
-    "category": "main"
+    "category": "main",
+    "answer": ["ke"],
+    "mode": "normal"
   },
   {
     "char": "こ",
     "romaji": "ko",
     "group": "k",
-    "category": "main"
+    "category": "main",
+    "answer": ["ko"],
+    "mode": "normal"
   },
   {
     "char": "さ",
     "romaji": "sa",
     "group": "s",
-    "category": "main"
+    "category": "main",
+    "answer": ["sa"],
+    "mode": "normal"
   },
   {
     "char": "し",
     "romaji": "shi",
     "group": "s",
-    "category": "main"
+    "category": "main",
+    "answer": ["shi"],
+    "mode": "normal"
   },
   {
     "char": "す",
     "romaji": "su",
     "group": "s",
-    "category": "main"
+    "category": "main",
+    "answer": ["su"],
+    "mode": "normal"
   },
   {
     "char": "せ",
     "romaji": "se",
     "group": "s",
-    "category": "main"
+    "category": "main",
+    "answer": ["se"],
+    "mode": "normal"
   },
   {
     "char": "そ",
     "romaji": "so",
     "group": "s",
-    "category": "main"
+    "category": "main",
+    "answer": ["so"],
+    "mode": "normal"
   },
   {
     "char": "た",
     "romaji": "ta",
     "group": "t",
-    "category": "main"
+    "category": "main",
+    "answer": ["ta"],
+    "mode": "normal"
   },
   {
     "char": "ち",
     "romaji": "chi",
     "group": "t",
-    "category": "main"
+    "category": "main",
+    "answer": ["chi"],
+    "mode": "normal"
   },
   {
     "char": "つ",
     "romaji": "tsu",
     "group": "t",
-    "category": "main"
+    "category": "main",
+    "answer": ["tsu"],
+    "mode": "normal"
   },
   {
     "char": "て",
     "romaji": "te",
     "group": "t",
-    "category": "main"
+    "category": "main",
+    "answer": ["te"],
+    "mode": "normal"
   },
   {
     "char": "と",
     "romaji": "to",
     "group": "t",
-    "category": "main"
+    "category": "main",
+    "answer": ["to"],
+    "mode": "normal"
   },
   {
     "char": "な",
     "romaji": "na",
     "group": "n",
-    "category": "main"
+    "category": "main",
+    "answer": ["na"],
+    "mode": "normal"
   },
   {
     "char": "に",
     "romaji": "ni",
     "group": "n",
-    "category": "main"
+    "category": "main",
+    "answer": ["ni"],
+    "mode": "normal"
   },
   {
     "char": "ぬ",
     "romaji": "nu",
     "group": "n",
-    "category": "main"
+    "category": "main",
+    "answer": ["nu"],
+    "mode": "normal"
   },
   {
     "char": "ね",
     "romaji": "ne",
     "group": "n",
-    "category": "main"
+    "category": "main",
+    "answer": ["ne"],
+    "mode": "normal"
   },
   {
     "char": "の",
     "romaji": "no",
     "group": "n",
-    "category": "main"
+    "category": "main",
+    "answer": ["no"],
+    "mode": "normal"
   },
   {
     "char": "は",
     "romaji": "ha",
     "group": "h",
-    "category": "main"
+    "category": "main",
+    "answer": ["ha"],
+    "mode": "normal"
   },
   {
     "char": "ひ",
     "romaji": "hi",
     "group": "h",
-    "category": "main"
+    "category": "main",
+    "answer": ["hi"],
+    "mode": "normal"
   },
   {
     "char": "ふ",
     "romaji": "fu",
     "group": "h",
-    "category": "main"
+    "category": "main",
+    "answer": ["fu"],
+    "mode": "normal"
   },
   {
     "char": "へ",
     "romaji": "he",
     "group": "h",
-    "category": "main"
+    "category": "main",
+    "answer": ["he"],
+    "mode": "normal"
   },
   {
     "char": "ほ",
     "romaji": "ho",
     "group": "h",
-    "category": "main"
+    "category": "main",
+    "answer": ["ho"],
+    "mode": "normal"
   },
   {
     "char": "ま",
     "romaji": "ma",
     "group": "m",
-    "category": "main"
+    "category": "main",
+    "answer": ["ma"],
+    "mode": "normal"
   },
   {
     "char": "み",
     "romaji": "mi",
     "group": "m",
-    "category": "main"
+    "category": "main",
+    "answer": ["mi"],
+    "mode": "normal"
   },
   {
     "char": "む",
     "romaji": "mu",
     "group": "m",
-    "category": "main"
+    "category": "main",
+    "answer": ["mu"],
+    "mode": "normal"
   },
   {
     "char": "め",
     "romaji": "me",
     "group": "m",
-    "category": "main"
+    "category": "main",
+    "answer": ["me"],
+    "mode": "normal"
   },
   {
     "char": "も",
     "romaji": "mo",
     "group": "m",
-    "category": "main"
+    "category": "main",
+    "answer": ["mo"],
+    "mode": "normal"
   },
   {
     "char": "や",
     "romaji": "ya",
     "group": "y",
-    "category": "main"
+    "category": "main",
+    "answer": ["ya"],
+    "mode": "normal"
   },
   {
     "char": "ゆ",
     "romaji": "yu",
     "group": "y",
-    "category": "main"
+    "category": "main",
+    "answer": ["yu"],
+    "mode": "normal"
   },
   {
     "char": "よ",
     "romaji": "yo",
     "group": "y",
-    "category": "main"
+    "category": "main",
+    "answer": ["yo"],
+    "mode": "normal"
   },
   {
     "char": "ら",
     "romaji": "ra",
     "group": "r",
-    "category": "main"
+    "category": "main",
+    "answer": ["ra"],
+    "mode": "normal"
   },
   {
     "char": "り",
     "romaji": "ri",
     "group": "r",
-    "category": "main"
+    "category": "main",
+    "answer": ["ri"],
+    "mode": "normal"
   },
   {
     "char": "る",
     "romaji": "ru",
     "group": "r",
-    "category": "main"
+    "category": "main",
+    "answer": ["ru"],
+    "mode": "normal"
   },
   {
     "char": "れ",
     "romaji": "re",
     "group": "r",
-    "category": "main"
+    "category": "main",
+    "answer": ["re"],
+    "mode": "normal"
   },
   {
     "char": "ろ",
     "romaji": "ro",
     "group": "r",
-    "category": "main"
+    "category": "main",
+    "answer": ["ro"],
+    "mode": "normal"
   },
   {
     "char": "わ",
     "romaji": "wa",
     "group": "w",
-    "category": "main"
+    "category": "main",
+    "answer": ["wa"],
+    "mode": "normal"
   },
   {
     "char": "を",
     "romaji": "wo",
     "group": "w",
-    "category": "main"
+    "category": "main",
+    "answer": ["wo"],
+    "mode": "normal"
   },
   {
     "char": "ん",
     "romaji": "n",
     "group": "w",
-    "category": "main"
+    "category": "main",
+    "answer": ["n"],
+    "mode": "normal"
   },
   {
     "char": "が",
     "romaji": "ga",
     "group": "g",
-    "category": "dakuten"
+    "category": "dakuten",
+    "answer": [],
+    "mode": "normal"
   },
   {
     "char": "ぎ",
     "romaji": "gi",
     "group": "g",
-    "category": "dakuten"
+    "category": "dakuten",
+    "answer": [],
+    "mode": "normal"
   },
   {
     "char": "ぐ",
     "romaji": "gu",
     "group": "g",
-    "category": "dakuten"
+    "category": "dakuten",
+    "answer": [],
+    "mode": "normal"
   },
   {
     "char": "げ",
     "romaji": "ge",
     "group": "g",
-    "category": "dakuten"
+    "category": "dakuten",
+    "answer": [],
+    "mode": "normal"
   },
   {
     "char": "ご",
     "romaji": "go",
     "group": "g",
-    "category": "dakuten"
+    "category": "dakuten",
+    "answer": [],
+    "mode": "normal"
   },
   {
     "char": "ざ",
     "romaji": "za",
     "group": "z",
-    "category": "dakuten"
+    "category": "dakuten",
+    "answer": [],
+    "mode": "normal"
   },
   {
     "char": "じ",
     "romaji": "ji",
     "group": "z",
-    "category": "dakuten"
+    "category": "dakuten",
+    "answer": [],
+    "mode": "normal"
   },
   {
     "char": "ず",
     "romaji": "zu",
     "group": "z",
-    "category": "dakuten"
+    "category": "dakuten",
+    "answer": [],
+    "mode": "normal"
   },
   {
     "char": "ぜ",
     "romaji": "ze",
     "group": "z",
-    "category": "dakuten"
+    "category": "dakuten",
+    "answer": [],
+    "mode": "normal"
   },
   {
     "char": "ぞ",
     "romaji": "zo",
     "group": "z",
-    "category": "dakuten"
+    "category": "dakuten",
+    "answer": [],
+    "mode": "normal"
   },
   {
     "char": "だ",
     "romaji": "da",
     "group": "d",
-    "category": "dakuten"
+    "category": "dakuten",
+    "answer": [],
+    "mode": "normal"
   },
   {
     "char": "ぢ",
     "romaji": "ji",
     "group": "d",
-    "category": "dakuten"
+    "category": "dakuten",
+    "answer": [],
+    "mode": "normal"
   },
   {
     "char": "づ",
     "romaji": "zu",
     "group": "d",
-    "category": "dakuten"
+    "category": "dakuten",
+    "answer": [],
+    "mode": "normal"
   },
   {
     "char": "で",
     "romaji": "de",
     "group": "d",
-    "category": "dakuten"
+    "category": "dakuten",
+    "answer": [],
+    "mode": "normal"
   },
   {
     "char": "ど",
     "romaji": "do",
     "group": "d",
-    "category": "dakuten"
+    "category": "dakuten",
+    "answer": [],
+    "mode": "normal"
   },
   {
     "char": "ば",
     "romaji": "ba",
     "group": "b",
-    "category": "dakuten"
+    "category": "dakuten",
+    "answer": [],
+    "mode": "normal"
   },
   {
     "char": "び",
     "romaji": "bi",
     "group": "b",
-    "category": "dakuten"
+    "category": "dakuten",
+    "answer": [],
+    "mode": "normal"
   },
   {
     "char": "ぶ",
     "romaji": "bu",
     "group": "b",
-    "category": "dakuten"
+    "category": "dakuten",
+    "answer": [],
+    "mode": "normal"
   },
   {
     "char": "べ",
     "romaji": "be",
     "group": "b",
-    "category": "dakuten"
+    "category": "dakuten",
+    "answer": [],
+    "mode": "normal"
   },
   {
     "char": "ぼ",
     "romaji": "bo",
     "group": "b",
-    "category": "dakuten"
+    "category": "dakuten",
+    "answer": [],
+    "mode": "normal"
   },
   {
     "char": "ぱ",
     "romaji": "pa",
     "group": "p",
-    "category": "dakuten"
+    "category": "dakuten",
+    "answer": [],
+    "mode": "normal"
   },
   {
     "char": "ぴ",
     "romaji": "pi",
     "group": "p",
-    "category": "dakuten"
+    "category": "dakuten",
+    "answer": [],
+    "mode": "normal"
   },
   {
     "char": "ぷ",
     "romaji": "pu",
     "group": "p",
-    "category": "dakuten"
+    "category": "dakuten",
+    "answer": [],
+    "mode": "normal"
   },
   {
     "char": "ぺ",
     "romaji": "pe",
     "group": "p",
-    "category": "dakuten"
+    "category": "dakuten",
+    "answer": [],
+    "mode": "normal"
   },
   {
     "char": "ぽ",
     "romaji": "po",
     "group": "p",
-    "category": "dakuten"
+    "category": "dakuten",
+    "answer": [],
+    "mode": "normal"
   },
   {
     "char": "きゃ",
     "romaji": "kya",
     "group": "ky",
-    "category": "combination"
+    "category": "combination",
+    "answer": [],
+    "mode": "normal"
   },
   {
     "char": "きゅ",
     "romaji": "kyu",
     "group": "ky",
-    "category": "combination"
+    "category": "combination",
+    "answer": [],
+    "mode": "normal"
   },
   {
     "char": "きょ",
     "romaji": "kyo",
     "group": "ky",
-    "category": "combination"
+    "category": "combination",
+    "answer": [],
+    "mode": "normal"
   },
   {
     "char": "しゃ",
     "romaji": "sha",
     "group": "sh",
-    "category": "combination"
+    "category": "combination",
+    "answer": [],
+    "mode": "normal"
   },
   {
     "char": "しゅ",
     "romaji": "shu",
     "group": "sh",
-    "category": "combination"
+    "category": "combination",
+    "answer": [],
+    "mode": "normal"
   },
   {
     "char": "しょ",
     "romaji": "sho",
     "group": "sh",
-    "category": "combination"
+    "category": "combination",
+    "answer": [],
+    "mode": "normal"
   },
   {
     "char": "ちゃ",
     "romaji": "cha",
     "group": "ch",
-    "category": "combination"
+    "category": "combination",
+    "answer": [],
+    "mode": "normal"
   },
   {
     "char": "ちゅ",
     "romaji": "chu",
     "group": "ch",
-    "category": "combination"
+    "category": "combination",
+    "answer": [],
+    "mode": "normal"
   },
   {
     "char": "ちょ",
     "romaji": "cho",
     "group": "ch",
-    "category": "combination"
+    "category": "combination",
+    "answer": [],
+    "mode": "normal"
   },
   {
     "char": "にゃ",
     "romaji": "nya",
     "group": "ny",
-    "category": "combination"
+    "category": "combination",
+    "answer": [],
+    "mode": "normal"
   },
   {
     "char": "にゅ",
     "romaji": "nyu",
     "group": "ny",
-    "category": "combination"
+    "category": "combination",
+    "answer": [],
+    "mode": "normal"
   },
   {
     "char": "にょ",
     "romaji": "nyo",
     "group": "ny",
-    "category": "combination"
+    "category": "combination",
+    "answer": [],
+    "mode": "normal"
   },
   {
     "char": "ひゃ",
     "romaji": "hya",
     "group": "hy",
-    "category": "combination"
+    "category": "combination",
+    "answer": [],
+    "mode": "normal"
   },
   {
     "char": "ひゅ",
     "romaji": "hyu",
     "group": "hy",
-    "category": "combination"
+    "category": "combination",
+    "answer": [],
+    "mode": "normal"
   },
   {
     "char": "ひょ",
     "romaji": "hyo",
     "group": "hy",
-    "category": "combination"
+    "category": "combination",
+    "answer": [],
+    "mode": "normal"
   },
   {
     "char": "みゃ",
     "romaji": "mya",
     "group": "my",
-    "category": "combination"
+    "category": "combination",
+    "answer": [],
+    "mode": "normal"
   },
   {
     "char": "みゅ",
     "romaji": "myu",
     "group": "my",
-    "category": "combination"
+    "category": "combination",
+    "answer": [],
+    "mode": "normal"
   },
   {
     "char": "みょ",
     "romaji": "myo",
     "group": "my",
-    "category": "combination"
+    "category": "combination",
+    "answer": [],
+    "mode": "normal"
   },
   {
     "char": "りゃ",
     "romaji": "rya",
     "group": "ry",
-    "category": "combination"
+    "category": "combination",
+    "answer": [],
+    "mode": "normal"
   },
   {
     "char": "りゅ",
     "romaji": "ryu",
     "group": "ry",
-    "category": "combination"
+    "category": "combination",
+    "answer": [],
+    "mode": "normal"
   },
   {
     "char": "りょ",
     "romaji": "ryo",
     "group": "ry",
-    "category": "combination"
+    "category": "combination",
+    "answer": [],
+    "mode": "normal"
   },
   {
     "char": "ぎゃ",
     "romaji": "gya",
     "group": "gy",
-    "category": "combination"
+    "category": "combination",
+    "answer": [],
+    "mode": "normal"
   },
   {
     "char": "ぎゅ",
     "romaji": "gyu",
     "group": "gy",
-    "category": "combination"
+    "category": "combination",
+    "answer": [],
+    "mode": "normal"
   },
   {
     "char": "ぎょ",
     "romaji": "gyo",
     "group": "gy",
-    "category": "combination"
+    "category": "combination",
+    "answer": [],
+    "mode": "normal"
   },
   {
     "char": "じゃ",
     "romaji": "ja",
     "group": "j",
-    "category": "combination"
+    "category": "combination",
+    "answer": [],
+    "mode": "normal"
   },
   {
     "char": "じゅ",
     "romaji": "ju",
     "group": "j",
-    "category": "combination"
+    "category": "combination",
+    "answer": [],
+    "mode": "normal"
   },
   {
     "char": "じょ",
     "romaji": "jo",
     "group": "j",
-    "category": "combination"
+    "category": "combination",
+    "answer": [],
+    "mode": "normal"
   },
   {
     "char": "ぢゃ",
     "romaji": "dya",
     "group": "dy",
-    "category": "combination"
+    "category": "combination",
+    "answer": [],
+    "mode": "normal"
   },
   {
     "char": "ぢゅ",
     "romaji": "dyu",
     "group": "dy",
-    "category": "combination"
+    "category": "combination",
+    "answer": [],
+    "mode": "normal"
   },
   {
     "char": "ぢょ",
     "romaji": "dyo",
     "group": "dy",
-    "category": "combination"
+    "category": "combination",
+    "answer": [],
+    "mode": "normal"
   },
   {
     "char": "びゃ",
     "romaji": "bya",
     "group": "by",
-    "category": "combination"
+    "category": "combination",
+    "answer": [],
+    "mode": "normal"
   },
   {
     "char": "びゅ",
     "romaji": "byu",
     "group": "by",
-    "category": "combination"
+    "category": "combination",
+    "answer": [],
+    "mode": "normal"
   },
   {
     "char": "びょ",
     "romaji": "byo",
     "group": "by",
-    "category": "combination"
+    "category": "combination",
+    "answer": [],
+    "mode": "normal"
   },
   {
     "char": "ぴゃ",
     "romaji": "pya",
     "group": "py",
-    "category": "combination"
+    "category": "combination",
+    "answer": [],
+    "mode": "normal"
   },
   {
     "char": "ぴゅ",
     "romaji": "pyu",
     "group": "py",
-    "category": "combination"
+    "category": "combination",
+    "answer": [],
+    "mode": "normal"
   },
   {
     "char": "ぴょ",
     "romaji": "pyo",
     "group": "py",
-    "category": "combination"
+    "category": "combination",
+    "answer": [],
+    "mode": "normal"
   }
 ]

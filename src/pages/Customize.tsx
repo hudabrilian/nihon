@@ -1,25 +1,26 @@
-import { useMemo, useState, useEffect, JSX, useCallback } from "react";
+import { Link, useNavigate } from "@tanstack/react-router";
+import { JSX, useCallback, useEffect, useMemo, useState } from "react";
 import CardButton from "../components/card-button";
-import { hiragana, katakana } from "../data/data";
-import { Sets, useTestStore } from "../stores/test";
-import { Page, usePageStore } from "../stores/page";
 import Sidebar from "../components/sidebar";
-import Footer from "../components/footer";
+import { hiragana, katakana } from "../data/data";
+import { Route } from "../routes/customize-kana.$set";
+import { Sets, useTestStore } from "../stores/test";
 
 export default function CustomizePage() {
-  const { setPage } = usePageStore();
-  const { currentSet, randomize, setSelectedGroups, setRandomize } =
-    useTestStore();
+  const { set } = Route.useParams();
+  const navigate = useNavigate();
+
+  const { randomize, setSelectedGroups, setRandomize } = useTestStore();
 
   const [selectedGroup, setSelectedGroup] = useState<string[]>([]);
 
   useEffect(() => {
     setSelectedGroup([]);
-  }, [currentSet]);
+  }, [set]);
 
   const listGroup = useMemo(() => {
     let groups: string[] = [];
-    switch (currentSet) {
+    switch (set) {
       case Sets.Hiragana:
         groups = hiragana
           .filter(
@@ -40,11 +41,11 @@ export default function CustomizePage() {
         return [];
     }
     return groups;
-  }, [currentSet]);
+  }, [set]);
 
   const listCategory = useMemo(() => {
     let categories: string[] = [];
-    switch (currentSet) {
+    switch (set) {
       case Sets.Hiragana:
         categories = hiragana
           .filter(
@@ -65,11 +66,11 @@ export default function CustomizePage() {
         return [];
     }
     return categories;
-  }, [currentSet]);
+  }, [set]);
 
   const listKana = useMemo(() => {
     let kana: JSX.Element[] = [];
-    switch (currentSet) {
+    switch (set) {
       case Sets.Hiragana:
         kana = hiragana
           .filter(
@@ -136,12 +137,12 @@ export default function CustomizePage() {
         return [];
     }
     return kana;
-  }, [currentSet, selectedGroup]);
+  }, [set, selectedGroup]);
 
   const groupsByCategory = useCallback(
     (category: string) => {
       let groups: string[] = [];
-      switch (currentSet) {
+      switch (set) {
         case Sets.Hiragana:
           groups = hiragana
             .filter((item) => item.category === category && item.group)
@@ -157,29 +158,26 @@ export default function CustomizePage() {
       }
       return groups;
     },
-    [currentSet]
+    [set]
   );
 
   function startTest() {
     setSelectedGroups(selectedGroup);
-    setPage(Page.Test);
+    navigate({
+      to: "/test",
+    });
   }
 
   return (
-    <div className="flex flex-col items-center min-h-screen justify-between">
+    <div className="flex flex-col w-full h-full items-center justify-between">
       <div className="flex-1 hero">
         <div className="hero-content text-center w-full">
           <div className="w-full">
             <div className="flex items-end space-x-4 w-full">
               <div className="flex items-end gap-4 w-full">
-                <button
-                  className="btn btn-square"
-                  onClick={() => {
-                    setPage(Page.Selection);
-                  }}
-                >
-                  {"<"}
-                </button>
+                <Link to="/selection">
+                  <button className="btn btn-square">{"<"}</button>
+                </Link>
                 <h1 className="text-5xl font-bold">Customize</h1>
               </div>
 
@@ -293,8 +291,6 @@ export default function CustomizePage() {
           </div>
         </div>
       </div>
-
-      <Footer />
     </div>
   );
 }

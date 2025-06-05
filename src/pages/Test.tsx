@@ -9,6 +9,8 @@ import { useTestStore } from "../stores/test";
 import useSound from "use-sound";
 import correctSfx from "../assets/sounds/correct.mp3";
 import incorrectSfx from "../assets/sounds/incorrect.mp3";
+import UserNav from "../components/user-nav";
+import { Link } from "@tanstack/react-router";
 
 export default function TestPage() {
   const { setPage } = usePageStore();
@@ -264,25 +266,12 @@ export default function TestPage() {
       <div className="bg-base-100 w-full flex items-center justify-center p-4">
         <div className="flex items-center justify-between w-5xl gap-4">
           <div className="w-1/3 flex gap-4">
-            <button
-              className="btn btn-primary btn-sm"
-              onClick={() => {
-                setPage(Page.Home);
-              }}
-            >
-              Back
-            </button>
+            <Link to="/selection">
+              <button className="btn btn-primary btn-sm">Back</button>
+            </Link>
             <button className="btn btn-accent btn-sm" onClick={finish}>
               Finish
             </button>
-          </div>
-
-          <div className="flex-1 text-center">
-            <h1 className="text-xl font-bold">Nihoon</h1>
-            <span className="text-xs text-base-content/30">By Brilian.</span>
-          </div>
-
-          <div className="flex justify-end gap-4 w-1/3">
             <button
               className="btn btn-secondary btn-sm"
               onClick={() => {
@@ -294,6 +283,14 @@ export default function TestPage() {
             >
               Restart
             </button>
+          </div>
+
+          <div className="flex-1 text-center">
+            <h1 className="text-xl font-bold">Nihoon</h1>
+            <span className="text-xs text-base-content/30">By Brilian.</span>
+          </div>
+
+          <div className="flex justify-end gap-4 w-1/3">
             <dialog id="restart_modal" className="modal">
               <div className="modal-box">
                 <h3 className="font-bold text-lg">
@@ -338,6 +335,7 @@ export default function TestPage() {
 
             <div className="flex items-center gap-4 text-end">
               <Sidebar />
+              <UserNav greeting={false} />
             </div>
           </div>
         </div>
