@@ -115,7 +115,7 @@ export default function TestPage() {
         question: item.char,
         answer: item.romaji,
         group: item.group,
-      }))
+      })),
     );
     setAnswers(updatedUserAnswer);
     setMistakes(mistakesState);
@@ -128,31 +128,39 @@ export default function TestPage() {
       return;
     }
 
-    setUserAnswer((prev) => {
-      const updated = [...prev];
-      updated[step] = answer || "";
-      return updated;
-    });
-
     const currentKana = listKana[step];
     if (answer !== "") {
       if (currentKana.romaji === answer.toLowerCase()) {
+        // Jawaban benar: simpan jawaban
+        setUserAnswer((prev) => {
+          const updated = [...prev];
+          updated[step] = answer;
+          return updated;
+        });
+
         setCorrect((prev) =>
-          prev.map((item, index) => (index === step ? true : item))
+          prev.map((item, index) => (index === step ? true : item)),
         );
 
         if (enableSound) {
           playCorrect();
         }
       } else {
+        // Jawaban salah: kosongkan jawaban
+        setUserAnswer((prev) => {
+          const updated = [...prev];
+          updated[step] = "";
+          return updated;
+        });
+
         setCorrect((prev) =>
-          prev.map((item, index) => (index === step ? false : item))
+          prev.map((item, index) => (index === step ? false : item)),
         );
 
         setPreviousAnswersState((prev) => {
           const updated = [...prev];
           const found = updated.find(
-            (item) => item.question === currentKana.char
+            (item) => item.question === currentKana.char,
           );
           if (found) {
             found.answers.push(answer);
@@ -172,7 +180,7 @@ export default function TestPage() {
         setMistakesState((prev) => {
           const updated = [...prev];
           const found = updated.find(
-            (item) => item.question === currentKana.char
+            (item) => item.question === currentKana.char,
           );
           if (found) {
             found.count++;
@@ -287,7 +295,7 @@ export default function TestPage() {
               className="btn btn-secondary btn-sm"
               onClick={() => {
                 const modal = document.getElementById(
-                  "restart_modal"
+                  "restart_modal",
                 ) as HTMLDialogElement;
                 modal?.showModal();
               }}
@@ -310,7 +318,7 @@ export default function TestPage() {
                     onClick={() => {
                       restart();
                       const modal = document.getElementById(
-                        "restart_modal"
+                        "restart_modal",
                       ) as HTMLDialogElement;
                       modal?.close();
                     }}
@@ -322,7 +330,7 @@ export default function TestPage() {
                     className="btn btn-secondary"
                     onClick={() => {
                       const modal = document.getElementById(
-                        "restart_modal"
+                        "restart_modal",
                       ) as HTMLDialogElement;
                       modal?.close();
                     }}
@@ -537,7 +545,7 @@ export default function TestPage() {
                           >
                             {answer}
                           </span>
-                        ))
+                        )),
                     )}
                 </div>
               )}

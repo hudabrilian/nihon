@@ -49,14 +49,14 @@ export default function SelectionPage() {
               </div>
             </CardButton>
 
-            <CardButton className="px-4" onClick={() => setPack()}>
+            {/* <CardButton className="px-4" onClick={() => setPack()}>
               <figure className="px-10 py-6">
                 <h2 className="font-bold text-5xl">✨</h2>
               </figure>
               <div className="card-body items-center text-center">
                 <h2 className="card-title text-3xl">Packs</h2>
               </div>
-            </CardButton>
+            </CardButton> */}
           </div>
         </div>
       </div>

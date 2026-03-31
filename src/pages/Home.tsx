@@ -15,14 +15,24 @@ export default function HomePage() {
               katakana, the fundamental components of the Japanese writing
               system.
             </p>
-            <button
-              className="btn btn-primary"
-              onClick={() => {
-                setPage(Page.Selection);
-              }}
-            >
-              Get Started
-            </button>
+            <div className="flex flex-col gap-3">
+              <button
+                className="btn btn-primary"
+                onClick={() => {
+                  setPage(Page.Selection);
+                }}
+              >
+                Get Started
+              </button>
+              <button
+                className="btn btn-outline btn-primary"
+                onClick={() => {
+                  setPage(Page.KanaChart);
+                }}
+              >
+                View Kana Chart
+              </button>
+            </div>
           </div>
         </div>
       </div>

@@ -6,6 +6,7 @@ enum Page {
   Customize = "Customize",
   Test = "Test",
   Result = "Result",
+  KanaChart = "KanaChart",
 }
 
 interface PageState {

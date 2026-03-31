@@ -5,6 +5,7 @@ import NotFoundPage from "./pages/NotFound";
 import ResultPage from "./pages/Result";
 import SelectionPage from "./pages/Selection";
 import TestPage from "./pages/Test";
+import KanaChartPage from "./pages/KanaChart";
 import { Page, usePageStore } from "./stores/page";
 import { useSettingsStore } from "./stores/settings";
 
@@ -33,6 +34,8 @@ function displayPage() {
       return <TestPage />;
     case Page.Result:
       return <ResultPage />;
+    case Page.KanaChart:
+      return <KanaChartPage />;
     default:
       return <NotFoundPage />;
   }
