@@ -1,3 +1,4 @@
+import { Analytics } from "@vercel/analytics/react";
 import { ToastContainer } from "react-toastify";
 import CustomizePage from "./pages/Customize";
 import HomePage from "./pages/Home";
@@ -20,6 +21,7 @@ function App() {
     <>
       <div data-theme={theme}>{pageComponent}</div>
       <ToastContainer stacked limit={3} />
+      <Analytics />
     </>
   );
 }
