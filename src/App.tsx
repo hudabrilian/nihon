@@ -8,21 +8,23 @@ import TestPage from "./pages/Test";
 import KanaChartPage from "./pages/KanaChart";
 import { Page, usePageStore } from "./stores/page";
 import { useSettingsStore } from "./stores/settings";
+import { useMemo } from "react";
 
 function App() {
   const { theme } = useSettingsStore();
+  const { page } = usePageStore();
+
+  const pageComponent = useMemo(() => displayPage(page), [page]);
 
   return (
     <>
-      <div data-theme={theme}>{displayPage()}</div>
+      <div data-theme={theme}>{pageComponent}</div>
       <ToastContainer stacked limit={3} />
     </>
   );
 }
 
-function displayPage() {
-  const { page } = usePageStore();
-
+function displayPage(page: Page) {
   switch (page) {
     case Page.Home:
       return <HomePage />;

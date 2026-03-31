@@ -1,9 +1,9 @@
-import { useWindowSize } from "react-use";
+import { useWindowSize } from "../hooks/useWindowSize";
 import { Page, usePageStore } from "../stores/page";
 import { useResultStore } from "../stores/result";
 import { Sets, useTestStore } from "../stores/test";
 import ReactConfetti from "react-confetti";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import Footer from "../components/footer";
 
 export default function ResultPage() {
@@ -18,11 +18,27 @@ export default function ResultPage() {
     if (questions.length === 0) {
       setPage(Page.Home);
     }
-  }, []);
+  }, [questions.length, setPage]);
 
-  const groups = questions
-    .map((item) => item.group)
-    .filter((value, index, self) => self.indexOf(value) === index);
+  const groupedStats = useMemo(() => {
+    const uniqueGroups = [...new Set(questions.map((q) => q.group))];
+    return uniqueGroups.map((group) => {
+      const groupQuestions = questions.filter((item) => item.group === group);
+      const groupCorrect = groupQuestions.filter(
+        (item) => answers[item.idx] === item.answer,
+      ).length;
+      const groupPercentage = Math.round(
+        (groupCorrect / groupQuestions.length) * 100,
+      );
+
+      return {
+        group,
+        groupQuestions,
+        groupCorrect,
+        groupPercentage,
+      };
+    });
+  }, [questions, answers]);
 
   const reset = () => {
     setAnswers([]);
@@ -122,18 +138,8 @@ export default function ResultPage() {
       <div className="flex-1">
         <h2 className="text-2xl font-bold mb-6">Detailed Results by Group</h2>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {groups.map((group, i) => {
-            const groupQuestions = questions.filter(
-              (item) => item.group === group,
-            );
-            const groupCorrect = groupQuestions.filter(
-              (item) => answers[item.idx] === item.answer,
-            ).length;
-            const groupPercentage = Math.round(
-              (groupCorrect / groupQuestions.length) * 100,
-            );
-
-            return (
+          {groupedStats.map(
+            ({ group, groupQuestions, groupCorrect, groupPercentage }, i) => (
               <div key={i} className="card bg-base-200 shadow-md p-6">
                 <h3 className="text-lg font-bold mb-4 flex items-center justify-between">
                   <span>Group {group}</span>
@@ -226,8 +232,8 @@ export default function ResultPage() {
                   })}
                 </div>
               </div>
-            );
-          })}
+            ),
+          )}
         </div>
       </div>
 

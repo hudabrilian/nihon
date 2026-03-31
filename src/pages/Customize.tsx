@@ -1,10 +1,10 @@
-import { useMemo, useState, useEffect, JSX, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import CardButton from "../components/card-button";
-import { hiragana, katakana } from "../data/data";
-import { Sets, useTestStore } from "../stores/test";
+import { useTestStore } from "../stores/test";
 import { Page, usePageStore } from "../stores/page";
 import Sidebar from "../components/sidebar";
 import Footer from "../components/footer";
+import { useKanaData, toggleGroup } from "../hooks/useKanaData";
 
 export default function CustomizePage() {
   const { setPage } = usePageStore();
@@ -13,152 +13,16 @@ export default function CustomizePage() {
 
   const [selectedGroup, setSelectedGroup] = useState<string[]>([]);
 
+  const handleToggleGroup = useCallback((group: string) => {
+    setSelectedGroup((prev) => toggleGroup(group, prev));
+  }, []);
+
+  const { listGroup, listCategory, listKana, groupsByCategory } =
+    useKanaData(currentSet);
+
   useEffect(() => {
     setSelectedGroup([]);
   }, [currentSet]);
-
-  const listGroup = useMemo(() => {
-    let groups: string[] = [];
-    switch (currentSet) {
-      case Sets.Hiragana:
-        groups = hiragana
-          .filter(
-            (item, index, self) =>
-              index === self.findIndex((t) => t.group === item.group)
-          )
-          .map((item) => item.group);
-        break;
-      case Sets.Katakana:
-        groups = katakana
-          .filter(
-            (item, index, self) =>
-              index === self.findIndex((t) => t.group === item.group)
-          )
-          .map((item) => item.group);
-        break;
-      default:
-        return [];
-    }
-    return groups;
-  }, [currentSet]);
-
-  const listCategory = useMemo(() => {
-    let categories: string[] = [];
-    switch (currentSet) {
-      case Sets.Hiragana:
-        categories = hiragana
-          .filter(
-            (item, index, self) =>
-              index === self.findIndex((t) => t.category === item.category)
-          )
-          .map((item) => item.category);
-        break;
-      case Sets.Katakana:
-        categories = katakana
-          .filter(
-            (item, index, self) =>
-              index === self.findIndex((t) => t.category === item.category)
-          )
-          .map((item) => item.category);
-        break;
-      default:
-        return [];
-    }
-    return categories;
-  }, [currentSet]);
-
-  const listKana = useMemo(() => {
-    let kana: JSX.Element[] = [];
-    switch (currentSet) {
-      case Sets.Hiragana:
-        kana = hiragana
-          .filter(
-            (item, index, self) =>
-              index ===
-              self.findIndex(
-                (t) => t.group === item.group && t.category === item.category
-              )
-          )
-          .map((item) => (
-            <CardButton
-              key={`${item.category}-${item.char}`}
-              active={selectedGroup.includes(item.group)}
-              onClick={() => {
-                if (selectedGroup.includes(item.group)) {
-                  setSelectedGroup(
-                    selectedGroup.filter((group) => group !== item.group)
-                  );
-                } else {
-                  setSelectedGroup([...selectedGroup, item.group]);
-                }
-              }}
-            >
-              <div className="card-body items-center text-center">
-                <h2 className="card-title text-2xl">
-                  {item.char}/{item.romaji}
-                </h2>
-              </div>
-            </CardButton>
-          ));
-        break;
-      case Sets.Katakana:
-        kana = katakana
-          .filter(
-            (item, index, self) =>
-              index ===
-              self.findIndex(
-                (t) => t.group === item.group && t.category === item.category
-              )
-          )
-          .map((item) => (
-            <CardButton
-              key={`${item.category}-${item.char}`}
-              active={selectedGroup.includes(item.group)}
-              onClick={() => {
-                if (selectedGroup.includes(item.group)) {
-                  setSelectedGroup(
-                    selectedGroup.filter((group) => group !== item.group)
-                  );
-                } else {
-                  setSelectedGroup([...selectedGroup, item.group]);
-                }
-              }}
-            >
-              <div className="card-body items-center text-center">
-                <h2 className="card-title text-2xl">
-                  {item.char}/{item.romaji}
-                </h2>
-              </div>
-            </CardButton>
-          ));
-        break;
-      default:
-        return [];
-    }
-    return kana;
-  }, [currentSet, selectedGroup]);
-
-  const groupsByCategory = useCallback(
-    (category: string) => {
-      let groups: string[] = [];
-      switch (currentSet) {
-        case Sets.Hiragana:
-          groups = hiragana
-            .filter((item) => item.category === category && item.group)
-            .map((item) => item.group);
-          break;
-        case Sets.Katakana:
-          groups = katakana
-            .filter((item) => item.category === category && item.group)
-            .map((item) => item.group);
-          break;
-        default:
-          return [];
-      }
-      return groups;
-    },
-    [currentSet]
-  );
 
   function startTest() {
     setSelectedGroups(selectedGroup);
@@ -220,26 +84,26 @@ export default function CustomizePage() {
                     </h1>
                     <CardButton
                       active={groupsByCategory(category).every((group) =>
-                        selectedGroup.includes(group)
+                        selectedGroup.includes(group),
                       )}
                       onClick={() => {
                         const categoryGroups = groupsByCategory(category);
                         if (
                           categoryGroups.every((group) =>
-                            selectedGroup.includes(group)
+                            selectedGroup.includes(group),
                           )
                         ) {
                           setSelectedGroup(
                             selectedGroup.filter(
-                              (group) => !categoryGroups.includes(group)
-                            )
+                              (group) => !categoryGroups.includes(group),
+                            ),
                           );
                         } else {
                           setSelectedGroup([
                             ...new Set([
                               ...selectedGroup,
                               ...categoryGroups.filter(
-                                (group) => !selectedGroup.includes(group)
+                                (group) => !selectedGroup.includes(group),
                               ),
                             ]),
                           ]);
@@ -253,8 +117,20 @@ export default function CustomizePage() {
                     </CardButton>
                     <div className="grid grid-cols-2 gap-4">
                       {listKana
-                        .filter((item) => item.key?.startsWith(category))
-                        .map((item) => item)}
+                        .filter((item) => item.categoryKey === category)
+                        .map((item) => (
+                          <CardButton
+                            key={`${item.category}-${item.char}`}
+                            active={selectedGroup.includes(item.group)}
+                            onClick={() => handleToggleGroup(item.group)}
+                          >
+                            <div className="card-body items-center text-center">
+                              <h2 className="card-title text-2xl">
+                                {item.char}/{item.romaji}
+                              </h2>
+                            </div>
+                          </CardButton>
+                        ))}
                     </div>
                   </div>
                 ))}

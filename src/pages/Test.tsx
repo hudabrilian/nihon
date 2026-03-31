@@ -1,10 +1,11 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useCallback } from "react";
 import Sidebar from "../components/sidebar";
 import { getKana } from "../data/data";
 import { Page, usePageStore } from "../stores/page";
-import { Mistake, PreviousAnswers, useResultStore } from "../stores/result";
+import { useResultStore } from "../stores/result";
 import { useSettingsStore } from "../stores/settings";
 import { useTestStore } from "../stores/test";
+import { useTestLogic } from "../hooks/useTestLogic";
 
 import useSound from "use-sound";
 import correctSfx from "../assets/sounds/correct.mp3";
@@ -23,24 +24,12 @@ export default function TestPage() {
     showPreviousAnswers,
   } = useSettingsStore();
 
-  const [step, setStep] = useState(0);
-  const [userAnswer, setUserAnswer] = useState<string[]>([]);
-  const [showAlert, setShowAlert] = useState(false);
-  const [correct, setCorrect] = useState<Array<boolean | null>>([]);
-  const [alertShown, setAlertShown] = useState(false);
-  const [progress, setProgress] = useState(0);
-  const [hoverList, setHoverList] = useState(false);
-
-  const [previousAnswers, setPreviousAnswersState] = useState<
-    PreviousAnswers[]
-  >([]);
-
-  const [answer, setAnswer] = useState<string>("");
+  const { state, dispatch } = useTestLogic(
+    currentSet,
+    selectedGroups,
+    randomize,
+  );
   const inputRef = useRef<HTMLInputElement>(null);
-
-  const [showList, setShowList] = useState(true);
-  const [mistakesState, setMistakesState] = useState<Mistake[]>([]);
-
   const scrollNum = useRef<HTMLDivElement>(null);
 
   const [playCorrect] = useSound(correctSfx, {
@@ -61,160 +50,167 @@ export default function TestPage() {
         inline: "center",
       });
     }
-  }, [step]);
+  }, [state.step]);
 
   const listKana = useMemo(() => {
     return getKana(currentSet, selectedGroups, randomize);
   }, [currentSet, selectedGroups]);
 
   useEffect(() => {
-    setUserAnswer(listKana.map(() => ""));
-    setCorrect(new Array(listKana.length).fill(null));
-  }, [listKana]);
+    dispatch({ type: "INIT", payload: { length: listKana.length } });
+  }, [listKana, dispatch]);
 
-  const restart = () => {
-    setStep(0);
-    setUserAnswer(listKana.map(() => ""));
-    setCorrect(new Array(listKana.length).fill(null));
-    setMistakesState([]);
-    setPreviousAnswersState([]);
-    setShowAlert(false);
-    setAlertShown(false);
-    setProgress(0);
-    setShowList(true);
-    setAnswer("");
-    setPage(Page.Test);
-  };
+  const proceedToResults = useCallback(
+    (updatedUserAnswer: string[]) => {
+      setQuestions(
+        listKana.map((item, index) => ({
+          idx: index,
+          question: item.char,
+          answer: item.romaji,
+          group: item.group,
+        })),
+      );
+      setAnswers(updatedUserAnswer);
+      setMistakes(state.mistakesState);
+      setPreviousAnswers(state.previousAnswers);
+      setPage(Page.Result);
+    },
+    [
+      listKana,
+      state.mistakesState,
+      state.previousAnswers,
+      setQuestions,
+      setAnswers,
+      setMistakes,
+      setPreviousAnswers,
+      setPage,
+    ],
+  );
 
-  const finish = () => {
-    updateUserAnswer();
-
-    setTimeout(() => {
-      const updatedUserAnswer = [...userAnswer];
-      updatedUserAnswer[step] = answer || "";
-
-      if (updatedUserAnswer.filter((item) => item === "").length > 0) {
-        if (alertShown) {
-          proceedToResults(updatedUserAnswer);
-        } else {
-          setShowAlert(true);
-          setAlertShown(true);
-        }
-        return;
-      }
-
-      setShowAlert(false);
-      proceedToResults(updatedUserAnswer);
-    }, 0);
-  };
-
-  const proceedToResults = (updatedUserAnswer: string[]) => {
-    setQuestions(
-      listKana.map((item, index) => ({
-        idx: index,
-        question: item.char,
-        answer: item.romaji,
-        group: item.group,
-      })),
-    );
-    setAnswers(updatedUserAnswer);
-    setMistakes(mistakesState);
-    setPreviousAnswers(previousAnswers);
-    setPage(Page.Result);
-  };
-
-  const updateUserAnswer = () => {
-    if (userAnswer[step] === answer) {
+  const updateUserAnswer = useCallback(() => {
+    if (state.userAnswer[state.step] === state.answer) {
       return;
     }
 
-    const currentKana = listKana[step];
-    if (answer !== "") {
-      if (currentKana.romaji === answer.toLowerCase()) {
+    const currentKana = listKana[state.step];
+    if (state.answer !== "") {
+      if (currentKana.romaji === state.answer.toLowerCase()) {
         // Jawaban benar: simpan jawaban
-        setUserAnswer((prev) => {
-          const updated = [...prev];
-          updated[step] = answer;
-          return updated;
+        dispatch({
+          type: "UPDATE_ANSWER",
+          payload: { step: state.step, answer: state.answer },
         });
-
-        setCorrect((prev) =>
-          prev.map((item, index) => (index === step ? true : item)),
-        );
+        dispatch({
+          type: "SET_CORRECT",
+          payload: { step: state.step, value: true },
+        });
 
         if (enableSound) {
           playCorrect();
         }
       } else {
         // Jawaban salah: kosongkan jawaban
-        setUserAnswer((prev) => {
-          const updated = [...prev];
-          updated[step] = "";
-          return updated;
+        dispatch({
+          type: "UPDATE_ANSWER",
+          payload: { step: state.step, answer: "" },
+        });
+        dispatch({
+          type: "SET_CORRECT",
+          payload: { step: state.step, value: false },
         });
 
-        setCorrect((prev) =>
-          prev.map((item, index) => (index === step ? false : item)),
-        );
-
-        setPreviousAnswersState((prev) => {
-          const updated = [...prev];
-          const found = updated.find(
-            (item) => item.question === currentKana.char,
-          );
-          if (found) {
-            found.answers.push(answer);
-          } else {
-            updated.push({
-              question: currentKana.char,
-              answers: [answer],
-            });
-          }
-          return updated;
+        dispatch({
+          type: "ADD_PREVIOUS_ANSWER",
+          payload: {
+            question: currentKana.char,
+            answers: [state.answer],
+          },
         });
 
         if (enableSound) {
           playIncorrect();
         }
 
-        setMistakesState((prev) => {
-          const updated = [...prev];
-          const found = updated.find(
-            (item) => item.question === currentKana.char,
-          );
-          if (found) {
-            found.count++;
-          } else {
-            updated.push({ question: currentKana.char, count: 1 });
-          }
-          return updated;
+        dispatch({
+          type: "ADD_MISTAKE",
+          payload: { question: currentKana.char, count: 1 },
         });
       }
     }
-  };
+  }, [
+    state.userAnswer,
+    state.answer,
+    state.step,
+    listKana,
+    enableSound,
+    playCorrect,
+    playIncorrect,
+    dispatch,
+  ]);
 
-  const changeStep = (next: boolean) => {
+  const finish = useCallback(() => {
     updateUserAnswer();
 
-    if (next) {
-      setStep((prev) => (prev === listKana.length - 1 ? prev : prev + 1));
-    } else {
-      setStep((prev) => (prev === 0 ? 0 : prev - 1));
-    }
-  };
+    setTimeout(() => {
+      const updatedUserAnswer = [...state.userAnswer];
+      updatedUserAnswer[state.step] = state.answer || "";
+
+      if (updatedUserAnswer.filter((item: string) => item === "").length > 0) {
+        if (state.alertShown) {
+          proceedToResults(updatedUserAnswer);
+        } else {
+          dispatch({ type: "SET_SHOW_ALERT", payload: true });
+          dispatch({ type: "SET_ALERT_SHOWN", payload: true });
+        }
+        return;
+      }
+
+      dispatch({ type: "SET_SHOW_ALERT", payload: false });
+      proceedToResults(updatedUserAnswer);
+    }, 0);
+  }, [
+    updateUserAnswer,
+    state.userAnswer,
+    state.answer,
+    state.step,
+    state.alertShown,
+    proceedToResults,
+    dispatch,
+  ]);
+
+  const restart = useCallback(() => {
+    dispatch({ type: "RESET", payload: { length: listKana.length } });
+    setPage(Page.Test);
+  }, [listKana.length, setPage, dispatch]);
+
+  const changeStep = useCallback(
+    (next: boolean) => {
+      updateUserAnswer();
+
+      if (next) {
+        dispatch({ type: "NEXT_STEP", payload: { length: listKana.length } });
+      } else {
+        dispatch({ type: "PREV_STEP" });
+      }
+    },
+    [updateUserAnswer, listKana.length, dispatch],
+  );
 
   useEffect(() => {
-    setAnswer(userAnswer[step] || "");
-    setShowAlert(false);
-    setAlertShown(false);
+    dispatch({
+      type: "SET_ANSWER",
+      payload: state.userAnswer[state.step] || "",
+    });
+    dispatch({ type: "SET_SHOW_ALERT", payload: false });
+    dispatch({ type: "SET_ALERT_SHOWN", payload: false });
 
     if (inputRef.current) {
       inputRef.current.select();
     }
-  }, [step]);
+  }, [state.step, state.userAnswer, dispatch]);
 
   useEffect(() => {
-    if (hoverList) return;
+    if (state.hoverList) return;
 
     let scrollTimeout: ReturnType<typeof setTimeout> | null = null;
 
@@ -241,23 +237,28 @@ export default function TestPage() {
       }
       window.removeEventListener("wheel", handleScroll);
     };
-  }, [changeStep]);
+  }, [changeStep, state.hoverList]);
 
   useEffect(() => {
-    const answered = userAnswer.filter((item) => item !== "").length;
+    const answered = state.userAnswer.filter(
+      (item: string) => item !== "",
+    ).length;
     const total = listKana.length;
-    setProgress((answered / total) * 100);
-  }, [userAnswer]);
+    dispatch({
+      type: "UPDATE_PROGRESS",
+      payload: (answered / total) * 100,
+    });
+  }, [state.userAnswer, listKana.length, dispatch]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Enter" || e.key === "ArrowRight") {
-        if (step === listKana.length - 1 && e.key !== "ArrowRight") {
+        if (state.step === listKana.length - 1 && e.key !== "ArrowRight") {
           finish();
         } else {
           changeStep(true);
         }
-      } else if (e.key === "ArrowLeft" && step > 0) {
+      } else if (e.key === "ArrowLeft" && state.step > 0) {
         changeStep(false);
       }
     };
@@ -265,7 +266,7 @@ export default function TestPage() {
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [changeStep]);
+  }, [changeStep, state.step, listKana.length, finish]);
 
   return (
     <div className="min-h-screen max-h-screen flex flex-col items-center justify-center w-screen max-w-screen overflow-hidden select-none">
@@ -352,7 +353,7 @@ export default function TestPage() {
       </div>
 
       <div className="flex-1 flex relative flex-col bg-base gap-10 w-full h-full items-center justify-center">
-        {showAlert && (
+        {state.showAlert && (
           <div
             role="alert"
             className="alert alert-error absolute top-10 max-w-md z-10 transition-all duration-300 ease-in-out"
@@ -376,7 +377,8 @@ export default function TestPage() {
                 the questions?
               </span>
               <span>
-                You still have {userAnswer.filter((item) => item === "").length}{" "}
+                You still have{" "}
+                {state.userAnswer.filter((item: string) => item === "").length}{" "}
                 unanswered questions.
               </span>
               <span>
@@ -390,37 +392,41 @@ export default function TestPage() {
           <div className="absolute z-0 w-full h-full flex justify-center">
             <progress
               className="progress progress-primary w-5/6 absolute m-2"
-              value={progress}
+              value={state.progress}
               max="100"
             ></progress>
 
             <h3 className="font-bold text-2xl mt-10">
-              {step + 1}/{listKana.length}
+              {state.step + 1}/{listKana.length}
             </h3>
           </div>
 
           <div
             className="hidden sm:block absolute z-10 h-full"
-            onMouseEnter={() => setHoverList(true)}
-            onMouseLeave={() => setHoverList(false)}
+            onMouseEnter={() =>
+              dispatch({ type: "SET_HOVER_LIST", payload: true })
+            }
+            onMouseLeave={() =>
+              dispatch({ type: "SET_HOVER_LIST", payload: false })
+            }
           >
-            {!showList && (
+            {!state.showList && (
               <button
                 className="btn btn-primary btn-sm m-10"
                 onClick={() => {
-                  setShowList(true);
+                  dispatch({ type: "SET_SHOW_LIST", payload: true });
                 }}
               >
                 {">"}
               </button>
             )}
-            {showList && (
+            {state.showList && (
               <div className="card bg-base-300 shadow-lg rounded-box p-4 m-6 max-w-md h-1/2">
                 <div className="flex flex-row items-start justify-start">
                   <button
                     className="btn btn-primary btn-sm mr-2"
                     onClick={() => {
-                      setShowList(false);
+                      dispatch({ type: "SET_SHOW_LIST", payload: false });
                     }}
                   >
                     {"<"}
@@ -433,21 +439,28 @@ export default function TestPage() {
                   {listKana.map((item, index) => (
                     <div
                       key={index}
-                      ref={index === step ? scrollNum : null}
+                      ref={index === state.step ? scrollNum : null}
                       className={
                         "flex items-center justify-center p-2 rounded-md hover:bg-accent/50 " +
-                        (step === index
+                        (state.step === index
                           ? "cursor-default bg-secondary text-secondary-content"
                           : "cursor-pointer") +
-                        (correct[index] !== null
-                          ? correct[index] === true
+                        (state.correct[index] !== null
+                          ? state.correct[index] === true
                             ? " bg-success text-success-content "
                             : " bg-error text-error-content "
                           : " ") +
                         font
                       }
                       onClick={() => {
-                        setStep(index);
+                        dispatch({
+                          type: "INIT",
+                          payload: { length: state.step },
+                        });
+                        dispatch({
+                          type: "SET_ANSWER",
+                          payload: state.userAnswer[index] || "",
+                        });
                       }}
                     >
                       <span className="text-lg">{item.char}</span>
@@ -463,19 +476,19 @@ export default function TestPage() {
                 <div className="flex justify-end w-1/3">
                   {showPreviousQuestion && (
                     <h2 className="font-bold text-primary/30 text-6xl relative hidden sm:block">
-                      {step !== 0 ? listKana[step - 1].char : ""}
+                      {state.step !== 0 ? listKana[state.step - 1].char : ""}
 
-                      {step !== 0 &&
-                        correct[step - 1] !== null &&
-                        correct[step - 1] === true && (
+                      {state.step !== 0 &&
+                        state.correct[state.step - 1] !== null &&
+                        state.correct[state.step - 1] === true && (
                           <span className="font-bold text-sm text-success absolute -top-2 left-0">
                             ✓
                           </span>
                         )}
 
-                      {step !== 0 &&
-                        correct[step - 1] !== null &&
-                        !correct[step - 1] && (
+                      {state.step !== 0 &&
+                        state.correct[state.step - 1] !== null &&
+                        !state.correct[state.step - 1] && (
                           <span className="font-bold text-sm text-error absolute -top-2 left-0">
                             ✕
                           </span>
@@ -486,18 +499,20 @@ export default function TestPage() {
 
                 <div className="w-1/3 flex flex-col items-center justify-center relative gap-4">
                   <h2 className="font-bold text-primary text-9xl px-12 min-w-fit">
-                    {listKana[step].char}
+                    {listKana[state.step].char}
                   </h2>
-                  {correct[step] !== null && (
+                  {state.correct[state.step] !== null && (
                     <div
                       className={
                         "badge absolute -bottom-12 " +
-                        (correct[step] === true
+                        (state.correct[state.step] === true
                           ? "badge-success"
                           : "badge-error")
                       }
                     >
-                      {correct[step] === true ? "Correct" : "Incorrect"}
+                      {state.correct[state.step] === true
+                        ? "Correct"
+                        : "Incorrect"}
                     </div>
                   )}
                 </div>
@@ -505,21 +520,21 @@ export default function TestPage() {
                 <div className="flex justify-start w-1/3">
                   {showNextQuestion && (
                     <h2 className="font-bold text-primary/30 text-6xl relative hidden sm:block">
-                      {step !== listKana.length - 1
-                        ? listKana[step + 1].char
+                      {state.step !== listKana.length - 1
+                        ? listKana[state.step + 1].char
                         : ""}
 
-                      {step !== listKana.length - 1 &&
-                        correct[step + 1] !== null &&
-                        correct[step + 1] === true && (
+                      {state.step !== listKana.length - 1 &&
+                        state.correct[state.step + 1] !== null &&
+                        state.correct[state.step + 1] === true && (
                           <span className="font-bold text-sm text-success absolute -top-2 right-0">
                             ✓
                           </span>
                         )}
 
-                      {step !== listKana.length - 1 &&
-                        correct[step + 1] !== null &&
-                        !correct[step + 1] && (
+                      {state.step !== listKana.length - 1 &&
+                        state.correct[state.step + 1] !== null &&
+                        !state.correct[state.step + 1] && (
                           <span className="font-bold text-sm text-error absolute -top-2 right-0">
                             ✕
                           </span>
@@ -533,12 +548,15 @@ export default function TestPage() {
             <div className="flex flex-col items-center justify-center z-20">
               {showPreviousAnswers && (
                 <div className="mb-2">
-                  {previousAnswers
-                    .filter((item) => item.question === listKana[step].char)
-                    .map((item) =>
+                  {state.previousAnswers
+                    .filter(
+                      (item: any) =>
+                        item.question === listKana[state.step].char,
+                    )
+                    .map((item: any) =>
                       item.answers
                         .slice(-4) // Get the latest 4 answers
-                        .map((answer, index) => (
+                        .map((answer: string, index: number) => (
                           <span
                             key={index}
                             className="badge badge-error badge-outline text-xs mr-1"
@@ -556,9 +574,9 @@ export default function TestPage() {
                 placeholder="_ _"
                 className="input input-ghost input-xl text-center focus:outline-0 focus:bg-base-200 border-b-accent focus:border-b-accent mb-4 rounded-none "
                 ref={inputRef}
-                value={answer}
+                value={state.answer}
                 onChange={(e) => {
-                  setAnswer(e.target.value);
+                  dispatch({ type: "SET_ANSWER", payload: e.target.value });
                 }}
               />
 
@@ -569,7 +587,7 @@ export default function TestPage() {
                     onClick={() => {
                       changeStep(false);
                     }}
-                    disabled={step === 0}
+                    disabled={state.step === 0}
                   >
                     Previous
                   </button>
@@ -584,7 +602,7 @@ export default function TestPage() {
                 </div>
 
                 <div className="flex w-1/3 justify-start">
-                  {step === listKana.length - 1 ? (
+                  {state.step === listKana.length - 1 ? (
                     <button
                       className="btn btn-accent"
                       onClick={() => {
@@ -600,7 +618,7 @@ export default function TestPage() {
                       onClick={() => {
                         changeStep(true);
                       }}
-                      disabled={step === listKana.length - 1}
+                      disabled={state.step === listKana.length - 1}
                     >
                       Next
                     </button>
