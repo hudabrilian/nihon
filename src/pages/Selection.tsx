@@ -12,8 +12,6 @@ export default function SelectionPage() {
     setPage(Page.Customize);
   };
 
-  const setPack = () => {};
-
   return (
     <div className="flex flex-col items-center min-h-screen justify-between">
       <div className="flex-1 hero cursor-default">
