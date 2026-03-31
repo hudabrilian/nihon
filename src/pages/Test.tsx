@@ -453,14 +453,7 @@ export default function TestPage() {
                         font
                       }
                       onClick={() => {
-                        dispatch({
-                          type: "INIT",
-                          payload: { length: state.step },
-                        });
-                        dispatch({
-                          type: "SET_ANSWER",
-                          payload: state.userAnswer[index] || "",
-                        });
+                        dispatch({ type: "SET_STEP", payload: index });
                       }}
                     >
                       <span className="text-lg">{item.char}</span>

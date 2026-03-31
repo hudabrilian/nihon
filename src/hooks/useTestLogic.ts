@@ -23,6 +23,7 @@ export type TestAction =
   | { type: "SET_CORRECT"; payload: { step: number; value: boolean | null } }
   | { type: "NEXT_STEP"; payload: { length: number } }
   | { type: "PREV_STEP" }
+  | { type: "SET_STEP"; payload: number }
   | { type: "SET_ANSWER"; payload: string }
   | { type: "SET_SHOW_ALERT"; payload: boolean }
   | { type: "SET_ALERT_SHOWN"; payload: boolean }
@@ -81,6 +82,9 @@ function testReducer(state: TestState, action: TestAction): TestState {
         ...state,
         step: state.step > 0 ? state.step - 1 : state.step,
       };
+
+    case "SET_STEP":
+      return { ...state, step: action.payload };
 
     case "SET_SHOW_ALERT":
       return { ...state, showAlert: action.payload };
